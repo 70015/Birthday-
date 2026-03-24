@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday EMAMI</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle, #0f0f0f, #000);
+    color: white;
+    text-align: center;
+}
+
+.container { padding: 40px 20px; }
+.hidden { display: none; }
+
+h1 {
+    color: #ff4d6d;
+    text-shadow: 0 0 10px #ff4d6d;
+}
+
+p {
+    max-width: 700px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* Buttons */
+button {
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+.play-btn {
+    font-size: 20px;
+    padding: 18px 40px;
+    background: linear-gradient(45deg, #ff4d6d, #ff758f);
+    box-shadow: 0 0 25px #ff4d6d;
+    animation: pulse 1.5s infinite;
+}
+
+.next-btn {
+    font-size: 18px;
+    padding: 14px 30px;
+    background: linear-gradient(45deg, #00ff99, #00cc66);
+    box-shadow: 0 0 20px #00ff99;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* Images */
+img {
+    width: 280px;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255,77,109,0.5);
+}
+
+/* Voice bars */
+.voice-bars {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.bar {
+    width: 5px;
+    height: 20px;
+    background: #ff4d6d;
+}
+
+.playing .bar {
+    animation: bounce 0.8s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%,100% { height: 10px; }
+    50% { height: 30px; }
+}
+
+/* Bengali subtitle style */
+.bn {
+    color: #cccccc;
+    font-size: 0.9em;
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    top: -10px;
+    animation: fall 3s linear infinite;
+}
+@keyframes fall {
+    to { transform: translateY(100vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="container" id="page1">
+    <h1>🎁 Hey EMAMI...</h1>
+    <p>
+    Aaj ka din thoda special hai 😄  
+    Aur ye koi normal wish nahi hai…  
+    thoda wait kar… worth it hoga 😉
+    </p>
+    <button class="next-btn" onclick="nextPage(2)">Start</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="container hidden" id="page2">
+    <h1>👀 Ek choti si baat...</h1>
+    <p>
+    Hum roz baat nahi karte…  
+    roz milte bhi nahi…  
+
+    Lekin phir bhi tu un logon mein se hai  
+    jo kabhi door nahi lagte 💙
+    </p>
+    <button class="next-btn" onclick="nextPage(3)">Continue</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="container hidden" id="page3">
+    <h1>📸 Our Memory</h1>
+
+    <img src="IMG-20260324-WA0020.jpg">
+
+    <p>
+    Yaar... mere paas aur photo hi nahi hai 😅  
+    Chal koi baat nahi... tu khud ko dekh le 😂
+    </p>
+
+    <img src="IMG-20260324-WA0019.jpg">
+    <img src="WA_1774368315801.jpeg">
+
+    <button class="next-btn" onclick="nextPage(4)">Next</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="container hidden" id="page4">
+    <h1>💌 Message</h1>
+    <p id="typingText"></p>
+    <button id="msgNext" class="next-btn hidden" onclick="nextPage(5)">Next</button>
+</div>
+
+<!-- PAGE 5 VOICE -->
+<div class="container hidden" id="page5">
+    <h1>🎧 Tap Below 👇</h1>
+
+    <button class="play-btn" onclick="playVoice()">▶️ PLAY VOICE</button>
+
+    <div id="voiceAnim" class="voice-bars">
+        <div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <audio id="voice">
+        <source src="voice.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="voiceNext" class="next-btn hidden" onclick="nextPage(6)">Next</button>
+</div>
+
+<!-- PAGE 6 -->
+<div class="container hidden" id="page6">
+    <h1>🎆 Surprise End</h1>
+    <p>Agar surprise achha laga… toh thanks bol dena.. 😄</p>
+</div>
+
+<script>
+
+// navigation
+function nextPage(page){
+    document.querySelectorAll(".container").forEach(p => p.classList.add("hidden"));
+    document.getElementById("page"+page).classList.remove("hidden");
+
+    if(page === 4) startTyping();
+    if(page === 6) confetti();
+}
+
+// dual language typing
+let lines = [
+["Happy Birthday Dear 💐","শুভ জন্মদিন 💐"],
+["Dekh te dekhte hamari dosti 4 saal ho gayi…","দেখতে দেখতে আমাদের বন্ধুত্ব ৪ বছর হয়ে গেল…"],
+["aur tujhe 4 baar birthday wish bhi kar diya 😄","আর তোকে ৪ বার জন্মদিনের শুভেচ্ছা জানিয়েছি 😄"],
+["Milna sirf 2–3 baar hua…","দেখা হয়েছে মাত্র ২–৩ বার…"],
+["par connection aisa hai jaise roz milte hain.","তবুও মনে হয় যেন রোজই দেখা হয়।"],
+["Yaad hai jab hum daily baat karte the?","মনে আছে যখন আমরা রোজ কথা বলতাম?"],
+["Tab lagta tha dosti kabhi nahi tutegi…","তখন মনে হতো এই বন্ধুত্ব কখনো ভাঙবে না…"],
+["Phir dheere dheere life busy ho gayi…","তারপর ধীরে ধীরে জীবন ব্যস্ত হয়ে গেল…"],
+["aur baatein kam ho gayi.","আর কথা কমে গেল।"],
+["Lekin ek baat aaj bhi same hai —","কিন্তু একটা জিনিস আজও একই আছে —"],
+["dosti wahi hai 💙","বন্ধুত্ব ঠিক আগের মতোই আছে 💙"],
+["Chahe saal mein ek baar baat ho…","চাই বছরে একবার কথা হোক…"],
+["par jab ho toh lage ki daily baat karte hain.","কিন্তু যখনই কথা হয়, মনে হয় যেন প্রতিদিনই কথা বলি।"],
+["Aaj ka din tera hai…","আজকের দিনটা শুধু তোর জন্য…"],
+["bas enjoy kar 🔥","শুধু উপভোগ কর 🔥"],
+["— Rahamat Ali","— রহমত আলী"]
+];
+
+let lineIndex=0,charIndex=0,current="",second=false;
+
+function startTyping(){
+    function type(){
+        if(lineIndex < lines.length){
+            let txt = second ? lines[lineIndex][1] : lines[lineIndex][0];
+
+            if(charIndex < txt.length){
+                current += txt.charAt(charIndex);
+                document.getElementById("typingText").innerHTML = current;
+                charIndex++;
+                setTimeout(type,25);
+            } else {
+                current += second ? "<br><br>" : "<br><span class='bn'>";
+                if(second) current += "</span>";
+                charIndex=0;
+                second=!second;
+                if(!second) lineIndex++;
+                setTimeout(type,200);
+            }
+        } else {
+            document.getElementById("msgNext").classList.remove("hidden");
+        }
+    }
+    type();
+}
+
+// voice
+let voice=document.getElementById("voice");
+let anim=document.getElementById("voiceAnim");
+
+function playVoice(){
+    voice.play();
+    anim.classList.add("playing");
+}
+
+voice.onended=function(){
+    anim.classList.remove("playing");
+    document.getElementById("voiceNext").classList.remove("hidden");
+};
+
+// confetti
+function confetti(){
+    for(let i=0;i<60;i++){
+        let c=document.createElement("div");
+        c.className="confetti";
+        c.style.left=Math.random()*100+"vw";
+        c.style.background=["red","yellow","blue","pink"][Math.floor(Math.random()*4)];
+        document.body.appendChild(c);
+    }
+}
+
+</script>
+
+</body>
+</html>
